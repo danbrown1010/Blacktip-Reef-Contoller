@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
+<!-- above set at the top of the file will set     -->
+<!-- the browser's rendering engine into           -->
+<!-- "Quirks Mode". Replacing this declaration     -->
+<!-- with a "Standards Mode" doctype is supported, -->
+<!-- but may lead to some differences in layout.   -->
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>www.blacktipreef.com</title>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Abel">
+    <style>
+      body {
+        font-family: 'Abel', serif;
+        font-size: 18px;
+        text-shadow: 4px 4px 4px #aaa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table bgcolor=#E6E6E6 width="1000" border="1" cellspacing="0" cellpadding="4" border-spacing="0">
+    <tr bgcolor=#BDBDBD>
+    	<td align=center><h1>Blacktip API</h1><br><h6>Test Page v0.2</h6></td>
+    </tr>
+    <tr><td>
+    <h1>Tank Measurement Servlet</h1>
+     <form name="input" action="tankmeasurement" method="get">
+        Tank Identifier: <input type="text" name="tankId">
+        Measurement Type: <input type="text" name="measurementType">
+        Measurement Content: <input type="text" name="measurementContent">
+        <input type="submit" value="SUBMIT MEASURE">
+    </form>
+	</td></tr>
+	<tr><td>
+    <h1>Send Text Servlet</h1>
+     <form name="input" action="sendtext" method="get">
+        Message: <input type="text" name="body">
+        <input type="submit" value="SEND TEXT-->">
+    </form>
+    </td></tr>
+    <tr><td>
+    <h1>Configuration Servlet</h1>
+    <h2>Add a tank configuration...</h2>
+     <form name="input" action="alltankconfigs" method="get">
+        Tank Label: <input type="text" name="tankLabel"><br>
+        Tank Owner:<input type="text" name="tankOwner"><br>
+        Owner eMail:<input type="text" name="ownerEmail"><br>
+        Owner Cell:<input type="text" name="ownerCell"><br>
+        <h3>Temperature Settings</h3>
+        	Temperature Sensor Label: <input type="text" name="tempSensorLabel"><br>
+        <h6>Range</h6> <br>
+        	Upper Temp: <input type="text" name="highTemp"> to
+        	Lower Temp: <input type="text" name="lowTemp"><br>
+        	Sensor Read Freq: <input type="text" name="sensorReads"><br>
+        	Cloud Update Freq:<input type="text" name="cloudUpdates"><br> 
+        	Heater to Outlet Mapping (Coming Soon!)
+        <h3>PH Settings</h3>
+        	PH Sensor Label: <input type="text" name="phSensorLabel"><br>
+        <h6>Range<br></h6>
+        	Upper PH: <input type="text" name="highPh"> to
+        	Lower PH: <input type="text" name="lowPh"><br>
+        	Sensor Read Freq: <input type="text" name="phSensorReads"><br>
+        	Cloud Update Freq:<input type="text" name="phCloudUpdates"> <br>
+        <h3>Salinity Settings</h3>
+        	Salinity Sensor Label: <input type="text" name="salinitySensorLabel"><br>
+        <h6>Range:</h6> 
+        	Upper:<input type="text" name="highSalinity"> to
+        	Lower: <input type="text" name="lowSalinity"><br>
+        <h6>Updates:</h6>         
+           	Probe Reads: <input type="text" name="salSensorReads"><br>
+        	Cloud Update:<input type="text" name="salCloudUpdates"> <br>
+        <h3>ORP Settings</h3>
+            ORP Sensor Label: <input type="text" name="orpSensorLabel"><br>
+        <h6>Range:<br></h6>
+        	Upper:<input type="text" name="highORP"> to 
+        	Lower: <input type="text" name="lowOrp"><br>
+         <h6>Updates:<br></h6>         
+           	Probe Reads: <input type="text" name="orpSensorReads"><br>
+        	Cloud Update:<input type="text" name="orpCloudUpdates"> <br>	
+        <h3>Relay Settings</h3>
+        	Outlet 1 Label: <input type="text" name="relayLabel1"><br>
+        	Outlet 2 Label: <input type="text" name="relayLabel2"><br>
+        	Outlet 3 Label: <input type="text" name="relayLabel3"><br>
+        	Outlet 4 Label: <input type="text" name="relayLabel4"><br>
+        	Outlet 5 Label: <input type="text" name="relayLabel5"><br>
+        	Outlet 6 Label: <input type="text" name="relayLabel6"><br>
+        	Outlet 7 Label: <input type="text" name="relayLabel7"><br>
+        	Outlet 8 Label: <input type="text" name="relayLabel8"><br>
+        <h3>Feed Cycle</h3>
+        <h6>(Coming Soon!)</h6>
+        <h3>Flow Meter</h3>
+        <h6>(Coming Soon!)</h6>
+        <h3>Water Changes</h3>
+        <h6>(Coming Soon!)</h6>
+        <h3>Dosing</h3>
+        <h6>(Coming Soon!)</h6>
+        <h3>Lighting</h3>
+        <h6>(Coming Soon!)</h6>
+        <h3>Auto Top Off</h3>       
+        <h6>(Coming Soon!)</h6>
+        <h3>Pumps</h3>        
+		<h6>(Coming Soon!Maybe?)</h6>
+        
+        <input type="submit" value="ADD THIS TANK CONFIG -->">
+        </td></tr>
+		</table>
+    </form>
+  </body>
+</html>
