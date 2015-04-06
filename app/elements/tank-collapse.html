@@ -1,0 +1,160 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+ <link rel="stylesheet" href="tank-collapse.css" shim-shadowdom>
+
+<polymer-element name="tank-collapse" attributes="target horizontal opened duration fixedSize allowOverflow">
+ 
+  <template>
+    <style>    
+    </style>
+    <content></content>
+  </template>
+ 
+  <script>
+
+    Polymer('tank-collapse',{
+      target: null,
+      horizontal: false,
+      opened: false,
+      duration: 0.33,
+      fixedSize: false,
+      allowOverflow: false,
+      created: function () {
+      this.transitionEndListener = this.transitionEnd.bind(this);
+    },
+      ready: function () {
+      this.target = this.target || this;
+    },
+      domReady: function () {
+      this.async(function() {
+        this.afterInitialUpdate = true;
+      });
+    },
+      detached: function () {
+      if (this.target) {
+        this.removeListeners(this.target);
+      }
+    },
+      targetChanged: function (old) {
+      if (old) {
+        this.removeListeners(old);
+      }
+      if (!this.target) {
+        return;
+      }
+      this.isTargetReady = !!this.target;
+      this.classList.toggle('tank-collapse-closed', this.target !== this);
+      this.toggleOpenedStyle(false);
+      this.horizontalChanged();
+      this.addListeners(this.target);
+      // set core-collapse-closed class initially to hide the target
+      this.toggleClosedClass(true);
+      this.update();
+    },
+      addListeners: function (node) {
+      node.addEventListener('transitionend', this.transitionEndListener);
+    },
+      removeListeners: function (node) {
+      node.removeEventListener('transitionend', this.transitionEndListener);
+    },
+      horizontalChanged: function () {
+      this.dimension = this.horizontal ? 'width' : 'height';
+    },
+      openedChanged: function () {
+      this.update();
+      this.fire('tank-collapse-open', this.opened);
+    },
+      toggle: function () {
+      this.opened = !this.opened;
+    },
+      setTransitionDuration: function (duration) {
+      var s = this.target.style;
+      s.transition = duration ? (this.dimension + ' ' + duration + 's') : null;
+      if (duration === 0) {
+        this.async('transitionEnd');
+      }
+    },
+      transitionEnd: function () {
+      if (this.opened && !this.fixedSize) {
+        this.updateSize('auto', null);
+      }
+      this.setTransitionDuration(null);
+      this.toggleOpenedStyle(this.opened);
+      this.toggleClosedClass(!this.opened);
+      this.asyncFire('core-resize', null, this.target);
+    },
+      toggleClosedClass: function (closed) {
+      this.hasClosedClass = closed;
+      this.target.classList.toggle('tank-collapse-closed', closed);
+    },
+      toggleOpenedStyle: function (opened) {
+      this.target.style.overflow = this.allowOverflow && opened ? '' : 'hidden';
+    },
+      updateSize: function (size, duration, forceEnd) {
+      this.setTransitionDuration(duration);
+      this.calcSize();
+      var s = this.target.style;
+      var nochange = s[this.dimension] === size;
+      s[this.dimension] = size;
+      // transitonEnd will not be called if the size has not changed
+      if (forceEnd && nochange) {
+        this.transitionEnd();
+      }
+    },
+      update: function () {
+      if (!this.target) {
+        return;
+      }
+      if (!this.isTargetReady) {
+        this.targetChanged(); 
+      }
+      this.horizontalChanged();
+      this[this.opened ? 'show' : 'hide']();
+    },
+      calcSize: function () {
+      return this.target.getBoundingClientRect()[this.dimension] + 'px';
+    },
+      getComputedSize: function () {
+      return getComputedStyle(this.target)[this.dimension];
+    },
+      show: function () {
+      this.toggleClosedClass(false);
+      // for initial update, skip the expanding animation to optimize
+      // performance e.g. skip calcSize
+      if (!this.afterInitialUpdate) {
+        this.transitionEnd();
+        return;
+      }
+      if (!this.fixedSize) {
+        this.updateSize('auto', null);
+        var s = this.calcSize();
+        if (s == '0px') {
+          this.transitionEnd();
+          return;
+        }
+        this.updateSize(0, null);
+      }
+      this.async(function() {
+        this.updateSize(this.size || s, this.duration, true);
+      });
+    },
+      hide: function () {
+      this.toggleOpenedStyle(false);
+      // don't need to do anything if it's already hidden
+      if (this.hasClosedClass && !this.fixedSize) {
+        return;
+      }
+      if (this.fixedSize) {
+        // save the size before hiding it
+        this.size = this.getComputedSize();
+      } else {
+        this.updateSize(this.calcSize(), null);
+      }
+      this.async(function() {
+        this.updateSize(0, this.duration);
+      });
+    }
+    });
+
+  </script>
+ 
+</polymer-element>

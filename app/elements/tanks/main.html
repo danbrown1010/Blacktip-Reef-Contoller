@@ -1,0 +1,184 @@
+  <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+
+  <link rel="import" href="/bower_components/core-collapse/core-collapse.html">
+  <link rel="import" href="/bower_components/firebase-element/firebase-element.html">
+  <link rel="import" href="/bower_components/pvc-globals/pvc-globals.html">
+  <link rel="import" href="/bower_components/paper-dialog/paper-action-dialog.html">
+  <link rel="import" href="/bower_components/paper-button/paper-button.html">
+  <link rel="import" href="/bower_components/paper-input/paper-input.html">
+  <link rel="import" href="/bower_components/paper-input/paper-autogrow-textarea.html">
+  <link rel="import" href="/bower_components/polymer/polymer.html">
+  <link rel="import" href="/bower_components/paper-datepicker/paper-datepicker.html">
+  <link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
+  <link rel="import" href="/bower_components/paper-radio-button/paper-radio-button.html">
+  <link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+  <link rel="import" href="/bower_components/polymer-filters/polymer-filters.html">
+  <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="/bower_components/paper-dialog/paper-action-dialog.html">
+  <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+  <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+  <link rel="import" href="tank-list.html">
+  <link rel="import" href="add-tank-dialogue.html">
+  
+<polymer-element name="manage-tanks">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 8px 24px;
+    }
+    .heading {
+      padding: 10px 15px;
+      background-color: #f3f3f3;
+      border: 1px solid #dedede;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    .content {
+      padding: 15px;
+      border: 1px solid #dedede;
+      border-top: none;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    paper-fab {
+      position: absolute;
+      top: -15px;
+      right: -60px;
+      color: #fff;
+      margin-right:2em;
+    }
+
+    paper-fab.blue {
+      background: #5264ae;
+    }
+
+    paper-fab.green {
+      background: #259b24;
+    }
+
+    paper-fab.yellow {
+      background: #ffeb3b;
+    }
+
+    paper-button.blue {
+      color: #5677fc;
+    }
+
+    paper-button[raised].blue {
+      background: #5677fc;
+      color: #5677fc;
+    }
+
+    paper-radio-group.blue paper-radio-button::shadow #ink[checked] {
+      color: #5677fc;
+    }
+    
+    paper-radio-group.blue paper-radio-button::shadow #onRadio {
+      background-color: #5677fc;
+    }
+
+    paper-radio-group.blue paper-radio-button[checked]::shadow #offRadio {
+      border-color: #5677fc;
+    }
+    
+    paper-radio-button {
+      display: block;
+    }
+  </style>
+  
+  <pvc-globals values="{{globals}}"></pvc-globals>
+  <firebase-element id="base" location="https://sizzling-torch-8338.firebaseio.com/Tanks" data="{{tanks}}" keys="{{keys}}"></firebase-element>
+
+  <template is="auto-binding">
+    <tank-list></tank-list>
+      <section on-tap="{{toggleDialog1}}">
+      <!--section-->
+          <paper-fab mini icon="add" class="blue" title="create" position="absolute"></paper-fab>
+          <paper-action-dialog id="tankDialog" heading="Add a new tank..." class="scrolling">
+            <paper-input autofocus id="tankName" label="Tank Name" floatingLabel></paper-input><br>
+            <paper-autogrow-textarea id="contentArea">
+                <textarea id="tankDesc" placeholder="Type a description of your tank here..."></textarea>
+            </paper-autogrow-textarea><br>
+            Dimensions:
+            <paper-input style="width:4em" id="tankHt" label="Height" maxlength="2" floatingLabel></paper-input>
+            <paper-input style="width:4em" id="tankLgth" label="Length" floatingLabel></paper-input>
+            <paper-input style="width:4em" id="tankWdth" label="Width" floatingLabel></paper-input><br>
+            <section>
+            Material:
+            <paper-radio-group class="blue" selected="glass">
+                <paper-radio-button name="glass" label="Glass"></paper-radio-button>
+                <paper-radio-button name="acrylic" label="Acrylic"></paper-radio-button>
+                <paper-radio-button name="wood" label="Wood"></paper-radio-button>
+            </paper-radio-group>
+            <h4>Please select the date that you started this tank?{{user.google.displayName}}-</h4><br>
+            <paper-datepicker id="startDatePicker" locale="en-us" formatDate="ll" datePicked="{{startDatePicked}}"></paper-datepicker>
+            <br>
+            <br>       
+            <paper-button dismissive>Cancel</paper-button>
+            <paper-button affirmative on-click="{{submitTank}}">Add</paper-button>
+            <br>
+            <br>
+          </paper-action-dialog>
+
+      </section>
+    </template>
+ 
+    <script>
+    Polymer({
+      openDialog: function() {this.$.tankDialog.toggle();},
+      submitTank: function() {
+        alert('Hello');
+        if (!this.$.tankName.value.length) {
+          alert('Please give the tank a name.');
+          return;
+        }
+
+        if (!this.$.tankDesc.value.length) {
+          alert('Please write a description.');
+          return;
+        }
+
+        var tank = this.$.base.push({
+          dispName: this.$.tankName.value,
+          //owner: this.globals.currentUser.google.displayName,
+          //ownerPictureUrl: this.globals.currentUser.google.cachedUserProfile.picture,
+          tankDesc: this.$.tankDesc.value,
+          height: this.$.tankHt.value,
+          length: this.$.tankLgth.value,
+          width: this.$.tankWdth.value,
+          //user: {
+          //  uid: this.globals.currentUser.uid,
+          //  dispName: this.globals.currentUser.google.displayName,
+          //  avatar_url: this.globals.currentUser.google.cachedUserProfile.picture,
+          //  },
+          timestamp: new Date().getTime(),
+          startDate: new Date().getTime()
+        });
+
+        this.$.tankName.value = '';
+        this.$.tankDesc.value = '';
+        this.$.tankHt.value = '';
+        this.$.tankLgth.value = '';
+        this.$.tankWdth.value = '';
+      } 
+    });
+    </script>
+  <script>
+    var scope = document.querySelector('template[is=auto-binding]');
+
+    scope.toggleDialog1 = function(e) {
+    if (e.target.localName != 'paper-fab') {
+      return;
+    }
+    var d = e.target.nextElementSibling;
+    if (!d) {
+      return;
+    }
+    d.toggle();
+    };
+  </script>
+
+</polymer-element>

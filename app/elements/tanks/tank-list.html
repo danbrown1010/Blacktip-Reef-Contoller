@@ -1,0 +1,238 @@
+<link rel="import" href="/bower_components/firebase-element/firebase-element.html">
+<link rel="import" href="/bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-action-dialog.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/paper-input/paper-autogrow-textarea.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-datepicker/paper-datepicker.html">
+<link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="/bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="/bower_components/polymer-filters/polymer-filters.html">
+<link rel="import" href="/bower_components/core-collapse/core-collapse.html">
+<link rel="import" href="tank-summary-card.html">
+
+<polymer-element name="tank-list" attributes="user">
+
+
+<script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+
+<template>
+    <style>
+      .tank {
+      padding: 20px;
+      background: #fff;
+      }
+
+      .tank h3 {
+      margin: 0;
+      }
+
+      .tank h3 a {
+      color: #333;
+      text-decoration: none;
+      }
+
+      .tank h3 a:hover {
+      color: #3F51B5;
+      }
+
+      .tank .owner {
+      padding-right: 20px;
+      }
+
+      .tank .owner img {
+      border-radius: 50%;
+      }
+
+      .tank .details p {
+      color: #616161;
+      margin: 8px 0;
+      }
+
+      .tank .metadata {
+      font-size: 12px;
+      color: #BDBDBD;
+      }
+
+      .tank .metadata a {
+      color: #616161;
+      border-bottom: 1px solid #eee;
+      text-decoration: none;
+      }
+
+      .add-tank {
+      padding: 20px;
+      text-align: center;
+      }
+      paper-radio-group.blue paper-radio-button::shadow #ink[checked] {
+      color: #5264ae;
+      } 
+    
+      paper-radio-group.blue paper-radio-button::shadow #onRadio {
+      background-color: #5264ae;
+      }
+
+      paper-radio-group.blue paper-radio-button[checked]::shadow #offRadio {
+      border-color: #5264ae;
+      }
+    
+      paper-radio-button {
+      display: block;
+      }
+
+      paper-input {
+      width: 5px;
+    }
+    paper-icon-button.hover:hover {
+        background: #eee;
+        border-radius: 50%;
+      }
+
+
+    body {
+      font-family: sans-serif;
+      margin: 8px 24px;
+    }
+
+    .heading {
+      padding: 10px 15px;
+      background-color: #f3f3f3;
+      border: 1px solid #dedede;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    
+    .content {
+      padding: 15px;
+      border: 1px solid #dedede;
+      border-top: none;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    table, th, td {
+    border: 0px solid gray;
+    border-collapse: collapse;
+    background-color: #fff;
+    }
+    td.iconCell{
+      width: 1px;
+      white-space: nowrap;
+    }
+    td.titleCell{
+      width: 1px;
+      white-space: nowrap;
+    }
+    .card {
+    margin:auto;
+    margin-top:5px;
+    background-color:#FFFFFF;
+    border-radius:2px;
+    color:#000000;
+    border:1px solid #d8d8d8;
+    padding:10px;
+    text-align:left;
+    font-size:10pt;
+    position:relative;
+    }
+    paper-radio-group.blue paper-radio-button::shadow #ink[checked] {
+      color: #4285f4;
+    }
+    
+    paper-radio-group.blue paper-radio-button::shadow #onRadio {
+      background-color: #4285f4;
+    }
+
+    paper-radio-group.blue paper-radio-button[checked]::shadow #offRadio {
+      border-color: #4285f4;
+    }
+    
+    paper-radio-button {
+      display: block;
+    }
+
+  </style>
+
+
+  <pvc-globals values="{{globals}}"></pvc-globals>
+  <firebase-element id="base" location="https://sizzling-torch-8338.firebaseio.com/Tanks" data="{{tanks}}" keys="{{keys}}"></firebase-element>
+  <template repeat="{{id in keys}}">
+    <paper-shadow z="1" class="card">
+      <table class="tankTable" style="width:100%">
+      <tr><td><h2>  {{tanks[id]['dispName']}}</h2></td>
+        <td class="iconCell" align="right">
+          <paper-icon-button icon="info" style="color:#5264ae"></paper-icon-button>
+        </td>
+        <td class="iconCell" align="right">
+          <paper-icon-button icon="create" style="color:#5264ae"></paper-icon-button>
+        </td>
+        <td class="iconCell" align="right">
+          <paper-icon-button on-click="{{deleteTank}}" icon="delete" style="color:#5264ae"></paper-icon-button>
+        </td>
+      </tr>
+      <tr><td colspan="4">Started by <a href="{{tanks[id]['ownerPictureUrl']}}">{{tanks[id]['owner']}}</a>
+               on {{tanks[id]['startDate']|date('MM-dd-yyyy HH:mm:ss')}}</h5></td></tr>
+      <tr><td colspan="4"><h6>{{id}}<h6></td></tr>
+    </table>
+    <paper-shadow>
+  </template>
+</template>
+
+<script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        //define element prototype here
+      deleteTank: function(e) {
+        var tId = e.target.templateInstance.model.tankId;
+        var confirmDeletion = confirm('Are you sure you want to delete this tank?'+tId);
+        if (confirmDeletion) {
+          document.location.href = '/#/tanks';
+          this.$.base.remove('/'+tankId);
+        }
+      },
+      submitTank: function() {
+        if (!this.$.tankName.value.length) {
+          alert('Please give the tank a name.');
+          return;
+        }
+
+        if (!this.$.tankDesc.value.length) {
+          alert('Please write a description.');
+          return;
+        }
+
+        var tank = this.$.base.push({
+          dispName: this.$.tankName.value,
+          //owner: this.globals.currentUser.google.displayName,
+          //ownerPictureUrl: this.globals.currentUser.google.cachedUserProfile.picture,
+          tankDesc: this.$.tankDesc.value,
+          height: this.$.tankHt.value,
+          length: this.$.tankLgth.value,
+          width: this.$.tankWdth.value,
+          //user: {
+            //uid: this.globals.currentUser.uid,
+            //dispName: this.globals.currentUser.google.displayName,
+            //avatar_url: this.globals.currentUser.google.cachedUserProfile.picture,
+            //},
+          timestamp: new Date().getTime(),
+          startDate: new Date().getTime()
+        });
+
+        this.$.tankName.value = '';
+        this.$.tankDesc.value = '';
+        this.$.tankHt.value = '';
+        this.$.tankLgth.value = '';
+        this.$.tankWdth.value = '';
+      } 
+
+      });
+
+    })();
+  </script>
+</polymer-element>

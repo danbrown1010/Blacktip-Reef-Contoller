@@ -1,0 +1,67 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/paper-input/paper-autogrow-textarea.html">
+<link rel="import" href="/bower_components/paper-datepicker/paper-datepicker.html">
+<link rel="import" href="/bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="/bower_components/paper-radio-button/paper-radio-button.html">
+
+
+<polymer-element name="add-tank-dialogue">
+
+  <template>
+    <style>    
+      :host {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      #section {
+        left: 490px;
+        top: 490px;
+        position: absolute;
+      }
+    </style>
+    <paper-action-dialog heading="Add a new tank..." class="scrolling">
+      <form>
+        <paper-input id="tankName" label="Tank Name" floatingLabel></paper-input><br>
+        <paper-autogrow-textarea id="contentArea">
+          <textarea id="tankDesc" placeholder="Type a description of your tank here..."></textarea>
+        </paper-autogrow-textarea><br>
+        Dimensions:
+        <paper-input style="width:4em" id="tankHt" label="Height" maxlength="2" floatingLabel></paper-input>
+        <paper-input style="width:4em" id="tankLgth" label="Length" floatingLabel></paper-input>
+        <paper-input style="width:4em" id="tankWdth" label="Width" floatingLabel></paper-input><br>
+        <section>
+        Material:
+        <paper-radio-group selected="glass">
+            <paper-radio-button name="glass" label="Glass" floatingLabel></paper-radio-button>
+            <paper-radio-button name="acrylic" label="Acrylic"></paper-radio-button>
+            <paper-radio-button name="wood" label="Wood"></paper-radio-button>
+        </paper-radio-group>
+        </section>
+        <br>
+        <h4>Please select the date that you started this tank?{{user.google.displayName}}-</h4><br>
+        <paper-datepicker id="startDatePicker" locale="en-us" formatDate="ll" datePicked="{{startDatePicked}}" ></paper-datepicker> 
+      </form>
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      
+      <paper-button dismissive>Cancel</paper-button>
+      <paper-button affirmative autofocus on-click="{{submitTank}}">Add</paper-button>
+
+    </paper-action-dialog>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      
+    });
+
+  </script>
+
+</polymer-element>

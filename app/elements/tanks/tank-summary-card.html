@@ -1,0 +1,39 @@
+<link rel="import" href="/bower_components/core-icons/core-icons.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="/bower_components/polymer-filters/polymer-filters.html">
+
+
+
+<polymer-element name="tank-summary-card" attributes="user owner displayName startDate tankId">
+
+  <template>
+    <style>    
+    :host {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    table, th, td {
+      border: 0px solid gray;
+      border-collapse: collapse;
+      background-color: #fff;
+    }
+    </style>
+    <table style="width:100%">
+      <tr><td><h4>{{displayName}}</h4></td><td align="right"><paper-icon-button icon="info"></paper-icon-button></td></tr>
+      <tr><td>Started by {{owner}} on {{{{startDate}} | date('MM-dd-yyyy HH:mm:ss')}}</h5></td><td align="right"><paper-icon-button icon="create"></paper-icon-button></td></tr>
+      <tr><td><h6>{{tankId}}<h6></td><td align="right"><paper-icon-button icon="delete"></paper-icon-button></td></tr>
+    </table>
+  </template>
+
+  <script>
+
+    Polymer({
+      
+    });
+
+  </script>
+
+</polymer-element>

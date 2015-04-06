@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blacktip V1.0</title>
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
+  <!-- endbuild -->
+  <link rel="import" href="/bower_components/core-icons/core-icons.html">
+  <!--link rel="import" href="./elements/blacktip-scaffold.html"-->
+  <link rel="import" href="/bower_components/core-item/core-item.html">
+  <link rel="import" href="/bower_components/sampler-scaffold/sampler-scaffold.html">
+  <link rel="import" href="/bower_components/core-menu/core-submenu.html">
+
+  <style>
+
+    body {
+      font-family: sans-serif;
+      color: #333;
+      margin: 0;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-touch-callout: none;
+    }
+
+  </style>
+</head>
+
+<body unresolved>
+
+  <sampler-scaffold label="Blacktip v1.0">
+    <core-item label="Tanks" tag="core-collapse" id="ci_tanks" icon="aspect-ratio" horizontal center layout url="./elements/tanks/main.html"></core-item>
+
+    <core-item label="Lights" tag="core-collapse" id="ci_lights" icon="visibility" horizontal center layout url="./elements/lights/main.html"></core-item>
+          
+    <core-item label="Monitors" id="ci_monitors" icon="announcement" horizontal center layout url="./elements/monitors/main.html"></core-item>
+    
+    <core-item label="Livestock" id="ci_livestock" icon="group-work" horizontal center layout url="./elements/livestock/main.html"></core-item>
+          
+    <core-item label="Room" id="ci_room" icon="language" label="Room" horizontal center layout url="./elements/room/main.html"></core-item>
+          
+    <core-item label="Reef Log" id="ci_logs" icon="event" label="Reef Log" horizontal center layout url="./elements/logs/main.html"></core-item>
+          
+    <core-item label="Analytics" id="ci_analytics" icon="assessment" horizontal center layout url="./elements/analytics/main.html"></core-item>
+          
+    <core-item label="Controller Config" id="ci_controller" icon="settings-input-composite" horizontal center layout url="./elements/controllerConfig/main.html"></core-item>
+          
+    <core-item label="Remote Control" id="ci_remote" icon="settings-remote" horizontal center layout url="./elements/remoteControl/main.html"></core-item>
+        
+  </sampler-scaffold>
+  
+</body>
+
+</html>
